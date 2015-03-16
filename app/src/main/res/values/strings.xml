@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TalkToStranger</string>
+    <string name="btnJoin">Bắt đầu chat</string>
+    <string name="other">Người lạ</string>
+    <string name="you">Bạn</string>
+    <string name="typing">đang chat...</string>
+    <string name="seen">đã xem</string>
+</resources>
