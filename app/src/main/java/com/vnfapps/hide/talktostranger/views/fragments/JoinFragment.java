@@ -38,4 +38,7 @@ public class JoinFragment extends Fragment{
 
         return root;
     }
+
+    public void onBackPressed(){
+    }
 }

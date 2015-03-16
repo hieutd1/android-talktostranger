@@ -26,39 +26,12 @@ public class ChatController {
     private ChatController() {
         try {
             socket = IO.socket(PROTOCOL+"://"+HOST+":"+PORT+"/"+NAMESPACE);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private ChatController(Socket socket) {
-        this.socket = socket;
-    }
-
-    private ChatController(IO.Options opts) {
-        try {
-            socket = IO.socket(PROTOCOL+"://"+HOST+":"+PORT, opts);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    public static synchronized void init(){
-        instance = new ChatController();
-    }
-    public static ChatController getInstance(){
-        return instance;
-    }
-    public void connect(){
-        Log.i(TAG+".connect", "start");
-        if(socket!=null){
-            socket.connect();
-            //trigger on connect to server
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
                     Log.i(TAG+".connect", "on connection");
                     ViewController.getInstance().showChatScreen();
+                    sendMessage("hehe");
                 }
             });
             //trigger on disconnect to server
@@ -89,12 +62,48 @@ public class ChatController {
 
                 }
             });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private ChatController(Socket socket) {
+        this.socket = socket;
+    }
+
+    private ChatController(IO.Options opts) {
+        try {
+            socket = IO.socket(PROTOCOL+"://"+HOST+":"+PORT, opts);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static synchronized void init(){
+        instance = new ChatController();
+    }
+    public static ChatController getInstance(){
+        return instance;
+    }
+    public void connect(){
+        Log.i(TAG+".connect", "start");
+        if(socket!=null){
+            socket.connect();
+            //trigger on connect to server
+
         }
     }
 
     public void disconnect(){
-        if(socket!=null){
+        Log.i(TAG+".disconnect", Socket.EVENT_DISCONNECT);
+        if(socket.connected()){
             socket.disconnect();
+        }
+    }
+
+    public void sendMessage(String message){
+        if(socket.connected()){
+            socket.emit(Socket.EVENT_MESSAGE, "{\"message\": \""+message+"\"}");
         }
     }
 

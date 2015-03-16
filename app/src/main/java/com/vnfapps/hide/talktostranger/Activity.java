@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -37,15 +38,14 @@ public class Activity extends FragmentActivity{
             super.onBackPressed();
         }*/
         FragmentManager fragmentManager = getSupportFragmentManager();
-        /*FragmentManager.BackStackEntry backEntry=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1);
-        Logger.i(TAG+"onBackPressed", backEntry.toString());*/
-        //Logger.i(TAG+"onBackPressed", Integer.toString(BaseViewHolder.getInstance().onBackPressed()));
         fragmentManager.popBackStack();
-        fragmentManager.executePendingTransactions();
-        if(fragmentManager.getBackStackEntryCount()==0){
-            super.onBackPressed();
-        }else {
-            ViewController.getInstance().onBackPressed();
+        if(fragmentManager.executePendingTransactions()) {
+            if (fragmentManager.getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+            } else {
+                ViewController.getInstance().onBackPressed();
+            }
         }
+        Log.i(TAG + "onBackPressed", fragmentManager.getBackStackEntryCount() + "");
     }
 }

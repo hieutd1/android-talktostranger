@@ -86,9 +86,14 @@ public class ViewController {
     }
 
     public void onBackPressed(){
+        if(currentFragment instanceof ChatFragment){
+            ((ChatFragment) currentFragment).onBackPressed();
+        }
         FragmentManager.BackStackEntry backEntry = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1);
+        Log.d(TAG+".onBackPressed", fragmentManager.getBackStackEntryCount()+"");
         Log.d(TAG+".onBackPressed", backEntry.getName());
         currentFragment = (Fragment)fragmentManager.findFragmentByTag(backEntry.getName());
+
         try {
             //setData(currentFragment.getData());
         }catch (Exception e){
